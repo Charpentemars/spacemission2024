@@ -14,6 +14,7 @@ export default class Space extends Phaser.Scene
 
     constructor() {
         super('space');
+        this.score = 0;
     }
 
     preload() {
