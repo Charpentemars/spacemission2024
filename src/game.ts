@@ -25,6 +25,7 @@ export default class Space extends Phaser.Scene
 
         this.load.image('ship', 'assets/sprites/phaser-ship.png');
         this.load.image('chunk', 'assets/sprites/chunk.png');
+
     }
 
     create() {
@@ -78,13 +79,16 @@ export default class Space extends Phaser.Scene
         this.physics.add.collider(this.sprite, this.layer);
         this.physics.add.overlap(this.sprite, this.objets);
 
+        //this.cameras.main.startFollow(this.sprite);
+
         this.scoreText = this.add.text(16, 16, 'score: 0', { font: '14px arial' });
+
     }
 
     particleBurst() {
         this.particles.x = this.sprite.x;
         this.particles.y = this.sprite.y;
-        this.particles.start(0, 2000);
+        this.particles.start(2000, 50);
     }
 
     update() {
@@ -110,13 +114,13 @@ export default class Space extends Phaser.Scene
         if (this.cursors.left.isDown)
         {
             this.sprite.setVelocityX(-150);
-            this.sprite.scaleX = -1;
+            this.sprite.flipX = true;
             this.particleBurst();
         }
         else if (this.cursors.right.isDown)
         {
             this.sprite.setVelocityX(150);
-            this.sprite.scaleX = 1;
+            this.sprite.flipX = false;
             this.particleBurst();
         }
     }
@@ -137,13 +141,13 @@ const config = {
     title: 'Space Mission',
     type: Phaser.AUTO,
     backgroundColor: '#125555',
-    width: 800,
+    width: 1000,
     height: 600,
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: false // Pour activer/désactiver le mode debug des collisions
         }
     },
     scene: Space,
