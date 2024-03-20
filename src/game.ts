@@ -25,6 +25,7 @@ export default class Space extends Phaser.Scene
 
         this.load.image('ship', 'assets/sprites/phaser-ship.png');
         this.load.image('chunk', 'assets/sprites/chunk.png');
+        console.log('Particle image loaded');
 
     }
 
@@ -72,23 +73,29 @@ export default class Space extends Phaser.Scene
         this.particles = this.add.particles(0, 0, 'chunk');
 
         this.particles.rotation = 0;
-        this.particles.gravityY = 150;
-        this.particles.bounce = 0.5;
+        this.particles.gravityY = 300;
+        this.particles.bounce = 0.8;
 
         this.sprite = this.physics.add.sprite(200, 70, 'ship').setOrigin(0.5, 0.5);
         this.physics.add.collider(this.sprite, this.layer);
         this.physics.add.overlap(this.sprite, this.objets);
 
-        //this.cameras.main.startFollow(this.sprite);
+        // Définir les limites de la caméra pour correspondre à la taille de la carte
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+
+        // Faire en sorte que la caméra suive le sprite
+        this.cameras.main.startFollow(this.sprite);
 
         this.scoreText = this.add.text(16, 16, 'score: 0', { font: '14px arial' });
+        this.scoreText.setScrollFactor(0);
 
     }
 
     particleBurst() {
+        console.log('Particle burst called'); //debug
         this.particles.x = this.sprite.x;
         this.particles.y = this.sprite.y;
-        this.particles.start(2000, 50);
+        this.particles.start(1000, 100)
     }
 
     update() {
